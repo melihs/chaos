@@ -1,7 +1,7 @@
 #include "errors.h"
 #include "utilities/language.h"
 
-void throw_error(int code, char *subject) {
+void throw_error(unsigned int code, char *subject) {
     #if defined(__linux__) || defined(__APPLE__) || defined(__MACH__)
         printf("\033[0;41m");
     #endif
@@ -54,7 +54,7 @@ void throw_error(int code, char *subject) {
             printf("Memory allocation for the function is failed!");
             break;
         case E_MAXIMUM_RECURSION_DEPTH_EXCEEDED:
-            printf("Maximum recursion depth %i exceeded!", __MAX_RECURSION_DEPTH__);
+            printf("Maximum recursion depth %d exceeded!", __MAX_RECURSION_DEPTH__);
             break;
         case E_UNEXPECTED_VALUE_TYPE:
             printf("Unexpected value type: %s", subject);

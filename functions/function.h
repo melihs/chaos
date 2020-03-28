@@ -20,7 +20,7 @@ enum BlockType { B_EXPRESSION, B_FUNCTION };
 typedef struct _Function {
     char *name;
     struct Symbol** parameters;
-    int parameter_count;
+    long long int parameter_count;
     enum Type type;
     struct Symbol* symbol;
     struct _Function* previous;
@@ -60,14 +60,14 @@ string_array modules_buffer;
 
 string_array function_names_buffer;
 
-int recursion_depth;
+unsigned short int recursion_depth;
 
 extern char *program_file_path;
 extern char *program_file_dir;
 string_array module_path_stack;
 string_array module_stack;
 
-extern int module_parsing;
+extern unsigned short int module_parsing;
 
 void startFunction(char *name, enum Type type);
 void endFunction();
@@ -79,7 +79,7 @@ void startFunctionParameters();
 void addFunctionParameter(char *secondary_name, enum Type type);
 void addSymbolToFunctionParameters(Symbol* symbol);
 void addFunctionCallParameterBool(bool b);
-void addFunctionCallParameterInt(int i);
+void addFunctionCallParameterInt(long long int i);
 void addFunctionCallParameterFloat(float f);
 void addFunctionCallParameterString(char *s);
 void addFunctionCallParameterSymbol(char *name);

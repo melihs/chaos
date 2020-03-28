@@ -14,7 +14,7 @@ void startFunction(char *name, enum Type type) {
         free(function_mode->body);
         function_mode->body = "";
         free(name);
-        for (int i = 0; i < function_parameters_mode->parameter_count; i++) {
+        for (unsigned short int i = 0; i < function_parameters_mode->parameter_count; i++) {
             Symbol* parameter = function_parameters_mode->parameters[i];
             removeSymbol(parameter);
         }
@@ -46,7 +46,7 @@ void startFunction(char *name, enum Type type) {
     function_mode->decision_functions.capacity = 0;
     function_mode->decision_functions.size = 0;
 
-    int parent_context = 1;
+    unsigned short int parent_context = 1;
     if (module_path_stack.size > 1) parent_context = 2;
     function_mode->context = malloc(1 + strlen(module_path_stack.arr[module_path_stack.size - parent_context]));
     strcpy(function_mode->context, module_path_stack.arr[module_path_stack.size - parent_context]);
@@ -82,7 +82,7 @@ void startFunction(char *name, enum Type type) {
     function_mode->parameter_count = function_parameters_mode->parameter_count;
 
 
-    for (int i = 0; i < function_mode->parameter_count; i++) {
+    for (unsigned short int i = 0; i < function_mode->parameter_count; i++) {
         Symbol* parameter = function_mode->parameters[i];
         parameter->param_of = function_mode;
     }
@@ -124,7 +124,7 @@ void freeFunctionMode() {
 void callFunction(char *name, char *module) {
     _Function* function = getFunction(name, module);
     scope_override = function;
-    for (int i = 0; i < function->parameter_count; i++) {
+    for (unsigned short int i = 0; i < function->parameter_count; i++) {
         Symbol* parameter = function->parameters[i];
         Symbol* parameter_call = function_parameters_mode->parameters[i];
 
@@ -159,7 +159,7 @@ void callFunction(char *name, char *module) {
         return;
     }
 
-    for (int i = 0; i < function->parameter_count; i++) {
+    for (unsigned short int i = 0; i < function->parameter_count; i++) {
         Symbol* parameter = function->parameters[i];
         removeSymbolByName(parameter->secondary_name);
     }
@@ -205,7 +205,7 @@ void printFunctionTable() {
         replace_char(context_temp, '\\', '/');
     #endif
         printf(
-            "\t{name: %s, type: %i, parameter_count: %i, decision_length: %i, context: %s, module_context: %s, module: %s} =>\n",
+            "\t{name: %s, type: %i, parameter_count: %lld, decision_length: %i, context: %s, module_context: %s, module: %s} =>\n",
             function->name,
             function->type,
             function->parameter_count,
@@ -266,7 +266,7 @@ void addFunctionCallParameterBool(bool b) {
     addSymbolToFunctionParameters(symbol);
 }
 
-void addFunctionCallParameterInt(int i) {
+void addFunctionCallParameterInt(long long int i) {
     union Value value;
     value.i = i;
     Symbol* symbol = addSymbol(NULL, NUMBER, value, V_INT);
@@ -365,7 +365,7 @@ void freeFunction(_Function* function) {
     free(function->body);
     free(function->name);
     free(function->parameters);
-    for (int i = 0; i < function->decision_functions.size; i++) {
+    for (unsigned short int i = 0; i < function->decision_functions.size; i++) {
         free(function->decision_expressions.arr[i]);
         free(function->decision_functions.arr[i]);
     }
@@ -446,7 +446,7 @@ void executeDecision(_Function* function) {
     strcpy(name, __LANGUAGE_NAME__);
     Symbol* symbol = addSymbol(name, BOOL, value, V_BOOL);
 
-    for (int i = 0; i < function->decision_functions.size; i++) {
+    for (unsigned short int i = 0; i < function->decision_functions.size; i++) {
         expression_buffer = strcat_ext(expression_buffer, __LANGUAGE_NAME__);
         expression_buffer = strcat_ext(expression_buffer, " = ");
         expression_buffer = strcat_ext(expression_buffer, function->decision_expressions.arr[i]);
@@ -521,7 +521,7 @@ void handleModuleImport(char *module_name, bool directly_import) {
     module_path = strcat_ext(module_path, module_dir);
     if (module_path[0] != '\0') module_path = strcat_ext(module_path, __PATH_SEPARATOR__);
 
-    for (int i = 0; i < modules_buffer.size; i++) {
+    for (unsigned short int i = 0; i < modules_buffer.size; i++) {
         module_path = strcat_ext(module_path, modules_buffer.arr[i]);
         if (i + 1 != modules_buffer.size) {
             module_dir = (char *) realloc(module_dir, strlen(module_path) + 1);
@@ -558,7 +558,7 @@ void handleModuleImport(char *module_name, bool directly_import) {
 }
 
 void freeModulesBuffer() {
-    for (int i = 0; i < modules_buffer.size; i++) {
+    for (unsigned short int i = 0; i < modules_buffer.size; i++) {
         free(modules_buffer.arr[i]);
     }
     if (modules_buffer.size > 0) free(modules_buffer.arr);
@@ -567,14 +567,14 @@ void freeModulesBuffer() {
 }
 
 void freeFunctionNamesBuffer() {
-    for (int i = 0; i < function_names_buffer.size; i++) {
+    for (unsigned short int i = 0; i < function_names_buffer.size; i++) {
         free(function_names_buffer.arr[i]);
     }
     function_names_buffer.size = 0;
 }
 
 bool isInFunctionNamesBuffer(char *name) {
-    for (int i = 0; i < function_names_buffer.size; i++) {
+    for (unsigned short int i = 0; i < function_names_buffer.size; i++) {
         if (strcmp(function_names_buffer.arr[i], name) == 0) return true;
     }
     return false;
@@ -593,7 +593,7 @@ void popModuleStack() {
 }
 
 void freeModulePathStack() {
-    for (int i = 0; i < module_path_stack.size; i++) {
+    for (unsigned short int i = 0; i < module_path_stack.size; i++) {
         free(module_path_stack.arr[i]);
     }
     module_path_stack.capacity = 0;
@@ -602,7 +602,7 @@ void freeModulePathStack() {
 }
 
 void freeModuleStack() {
-    for (int i = 0; i < module_stack.size; i++) {
+    for (unsigned short int i = 0; i < module_stack.size; i++) {
         free(module_stack.arr[i]);
     }
     module_stack.capacity = 0;

@@ -5,7 +5,7 @@
 #include "loop.h"
 #include "../utilities/injector.h"
 
-void startTimesDo(int iter) {
+void startTimesDo(long long int iter) {
     if (loop_mode != NULL) {
         loop_mode->nested_counter++;
         return;

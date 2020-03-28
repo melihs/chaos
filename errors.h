@@ -36,6 +36,6 @@ extern void freeEverything();
 extern bool is_interactive;
 extern jmp_buf InteractiveShellErrorAbsorber;
 
-void throw_error(int code, char *subject);
+void throw_error(unsigned int code, char *subject);
 
 #endif

@@ -48,7 +48,7 @@ char *program_file_dir;
 
 %union {
     bool bval;
-    int ival;
+    long long int ival;
     float fval;
     char *sval;
     unsigned long long int lluval;
@@ -205,7 +205,7 @@ parser:
 
 line: T_NEWLINE
     | mixed_expression T_NEWLINE                                    { if (is_interactive) printf("%g\n", $1); }
-    | expression T_NEWLINE                                          { if (is_interactive) printf("%i\n", $1); }
+    | expression T_NEWLINE                                          { if (is_interactive) printf("%lli\n", $1); }
     | variable T_NEWLINE                                            { if ($1[0] != '\0' && is_interactive) { printSymbolValueEndWithNewLine(getSymbol($1)); free($1); } }
     | loop T_NEWLINE                                                { }
     | T_QUIT T_NEWLINE                                              {
@@ -237,7 +237,7 @@ print: T_VAR T_LEFT_BRACKET T_STRING T_RIGHT_BRACKET                { printSymbo
 ;
 print: T_VAR                                                        { printSymbolValueEndWithNewLine(getSymbol($1)); free($1); }
 ;
-print: T_INT                                                        { printf("%i\n", $1); }
+print: T_INT                                                        { printf("%lli\n", $1); }
 ;
 print: T_FLOAT                                                      { printf("%f\n", $1); }
 ;

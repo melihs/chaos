@@ -49,7 +49,7 @@ char *program_file_dir;
 %union {
     bool bval;
     long long int ival;
-    float fval;
+    long double fval;
     char *sval;
     unsigned long long int lluval;
 }
@@ -204,7 +204,7 @@ parser:
 ;
 
 line: T_NEWLINE
-    | mixed_expression T_NEWLINE                                    { if (is_interactive) printf("%g\n", $1); }
+    | mixed_expression T_NEWLINE                                    { if (is_interactive) printf("%Lg\n", $1); }
     | expression T_NEWLINE                                          { if (is_interactive) printf("%lli\n", $1); }
     | variable T_NEWLINE                                            { if ($1[0] != '\0' && is_interactive) { printSymbolValueEndWithNewLine(getSymbol($1)); free($1); } }
     | loop T_NEWLINE                                                { }
@@ -239,7 +239,7 @@ print: T_VAR                                                        { printSymbo
 ;
 print: T_INT                                                        { printf("%lli\n", $1); }
 ;
-print: T_FLOAT                                                      { printf("%f\n", $1); }
+print: T_FLOAT                                                      { printf("%Lf\n", $1); }
 ;
 print: T_STRING                                                     { printf("%s\n", $1); free($1); }
 ;
@@ -257,7 +257,7 @@ mixed_expression: T_FLOAT                                           { $$ = $1; }
     | mixed_expression T_MINUS expression                           { $$ = $1 - $3; }
     | mixed_expression T_MULTIPLY expression                        { $$ = $1 * $3; }
     | mixed_expression T_DIVIDE expression                          { $$ = $1 / $3; }
-    | expression T_DIVIDE expression                                { $$ = $1 / (float)$3; }
+    | expression T_DIVIDE expression                                { $$ = $1 / (long double)$3; }
     | T_VAR T_PLUS T_VAR                                            { $$ = getSymbolValueFloat($1) + getSymbolValueFloat($3); }
     | T_VAR T_MINUS T_VAR                                           { $$ = getSymbolValueFloat($1) - getSymbolValueFloat($3); }
     | T_VAR T_MULTIPLY T_VAR                                        { $$ = getSymbolValueFloat($1) * getSymbolValueFloat($3); }
